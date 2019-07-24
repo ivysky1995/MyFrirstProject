@@ -4,21 +4,20 @@ namespace app\models;
 
 use Yii;
 
-
 /**
- * This is the model class for table "user".
+ * This is the model class for table "project".
  *
  * @property int $id
  * @property string $name
  */
-class User extends \yii\db\ActiveRecord
+class Project extends \yii\db\ActiveRecord
 {
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
-        return 'user';
+        return 'project';
     }
 
     /**
@@ -43,11 +42,11 @@ class User extends \yii\db\ActiveRecord
     }
     public function getProjectUsers()
     {
-        return $this->hasMany(User::className(),['user_id'=>'id']);
+        return $this->hasMany(ProjectUser::className(),['project_id'=>'id']);
     }
-    public function getProjects()
+    public function getUsers()
     {
-        return $this->hasMany(Project::className(), ['id'=>'project_id'])
+        return $this->hasMany(User::className(), ['id'=>'user_id'])
         ->via('projectUsers');
     }
 }
