@@ -30,8 +30,8 @@ class CreateTestDataController extends Controller
     
     private function createProjects()
     {
-        for ($i = 21; $i <= 40; $i++) {
-            $project = new Project(['name' => "User $i"]);
+        for ($i = 1; $i <= 20; $i++) {
+            $project = new Project(['name' => "Project $i"]);
             $project->save();
         }
     }
