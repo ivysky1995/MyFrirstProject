@@ -8,3 +8,4 @@ modules:
             part: orm
             entryScript: index-test.php
             cleanup: false
+            configFile: 'path/to/config.php'

@@ -2,16 +2,19 @@
 
 namespace app\models;
 
-use Yii;
-
+use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "user".
  *
  * @property int $id
  * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $authKey
+ * @property string $accessToken
  */
-class User extends \yii\db\ActiveRecord
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -27,7 +30,8 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'string', 'max' => 255],
+            [['name', 'email'], 'required'],
+            [['name', 'email', 'password', 'authKey', 'accessToken'], 'string', 'max' => 255],
         ];
     }
 
@@ -39,6 +43,10 @@ class User extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => 'Name',
+            'email' => 'Email',
+            'password' => 'Password',
+            'authKey' => 'Auth Key',
+            'accessToken' => 'Access Token',
         ];
     }
     public function getProjectUsers()
@@ -50,4 +58,32 @@ class User extends \yii\db\ActiveRecord
         return $this->hasMany(Project::className(), ['id'=>'project_id'])
         ->via('projectUsers');
     }
+    public static function findIdentity($id)
+    {
+        return self::findOne($id);
+    }
+    
+    public static function findIdentityByAccessToken($token, $type=null){
+        return self::findOne(['accessToken'=>$token]);
+    }
+    
+    public static function findByUsername($name)
+    {
+        return self::findOne(['name'=>$name]);
+    }
+    
+    public function getId(){
+        return $this->id;
+    }
+    public function getAuthKey(){
+        return $this->authKey;
+    }
+    public function validateAuthKey($authKey) {
+        return $this->authKey ===$authKey;
+    }
+    public function validatePassword($password){
+        return $this->password === $password;
+    }
+    
+  
 }

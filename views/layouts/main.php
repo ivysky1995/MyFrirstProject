@@ -26,44 +26,68 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
+<div class="wrap bg-info">
     <?php
     NavBar::begin([
         'brandLabel' => Yii::$app->name,
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse navbar-static-top',
         ],
     ]);
+    $navItem = [
+        ['label' => 'Home', 'url' => ['/site/index']],
+        ['label' => 'Project', 'url' => ['/project/index']],
+        ['label' => 'User', 'url' => ['/user/index']],
+        
+
+
+
+    ];
+    if(Yii::$app->user->isGuest) {
+
+        array_push($navItem,['label' => 'Login', 'url' => ['/site/login']],['label' => 'Register', 'url' => ['/site/register']]);
+    }else {
+        array_push($navItem,'<li>'.Html::beginForm(['/site/logout'], 'post'). Html::submitButton( 'Logout (' . Yii::$app->user->identity->name . ')',['class' => 'btn btn-link logout']). Html::endForm(). '</li>');
+
+
+    }
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Project', 'url' => ['/project/index']],
-            ['label' => 'User', 'url' => ['/user/index']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
+        'items' => $navItem
     ]);
     NavBar::end();
     ?>
 
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+    <div class="container-fluid">
+        <div class="col-md-2 aside-left bg-info">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <?php echo Html::a('<span class="glyphicon glyphicon-home"></span> Home Page',['/site'],['class'=>'btn btn-link'])?>
+                        </li>
+                        
+                        <li class="list-group-item">
+                            <?php echo Html::a('<span class="glyphicon glyphicon-align-justify"></span> Project',['/project'],['class'=>'btn btn-link'])?>
+                        </li>
+                      
+                        
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col-md-10 admin-right">
+            <?= Breadcrumbs::widget([
+                 'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]) ?>
+            <?= Alert::widget() ?>
+        
+            <?= $content ?>
+        
+        </div>
     </div>
 </div>
 

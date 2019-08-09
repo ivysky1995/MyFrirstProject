@@ -15,6 +15,10 @@ class m190724_004238_create_user_table extends Migration
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
             'name'=>$this->string(),
+            'email' =>$this->string(),
+            'password' =>$this->string(),
+            'authKey' =>$this->string(),
+            'accessToken' =>$this->string(),
         ]);
     }
 

@@ -28,6 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'method' => 'post',
             ],
         ]) ?>
+        <?= Html::a('View Term',['/term/index','projectId'=> $model->id],['class'=>'btn btn-success']) ?>
     </p>
 
     <?= DetailView::widget([
@@ -38,22 +39,43 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
     <h2>User</h2>
+    
     <table class="table table-striped table-bordered">
         <tr>
             <th>User</th>
             <th>Privilege</th>
+            <th>Remove</th>
+            <th>Created at</th>
+            
+            
+            
         </tr>
         <?php foreach ($model->users as $user){ ?>
         <?php 
             $projectUser = \app\models\ProjectUser::findOne(['project_id'=>$model->id,'user_id'=>$user->id]);
         ?>
+        <?php $projectUsername = $projectUser->user->name?>
+        <? echo $projectUsername; ?>
         <tr>
             <td> <?= $projectUser->user->name ?></td>
             <td><?= $projectUser->privilegeStr ?></td>
+            <td><?= Html::a('Remove',['remove', 'projectUserId' => $projectUser->id],[
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => "Are you sure you want to delete $projectUsername ?",
+                    'method' => 'post',
+                
+            ]])?></td>
+            <td> <?php 
+            echo Yii::$app->formatter->asTime($projectUser->created_at ); ?></td>
+            
+            
+            
         </tr>
         <?php } ?>
     
     </table>
+    <?php if (Yii::$app->user->can('manager')){?>
     <h2>Add Project User</h2>
     
     <?php $form = ActiveForm::begin([
@@ -69,14 +91,19 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
     <?= $form->field($projectUser,'project_id')->hiddenInput()->label(false) ?>
     
-    <?= $form->field($projectUser,'user_id')->dropDownList($userMap) ?>
+    <?= $form->field($projectUser,'user_id')->dropDownList($userMap,[
+        'prompt'=>'Select User'
+    ]) ?>
     
     <?= $form->field($projectUser,'privilege')->radioList($projectUser::privilegeOptionArr()) ?>
     
     <div class= "form-group">
+    
     <?= Html::submitButton('Add',['class'=>'btn btn-success']) ?>
+    
     </div>
     
     <?php ActiveForm::end() ?>
+    <?php } ?>
 
 </div>

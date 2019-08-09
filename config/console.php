@@ -14,6 +14,9 @@ $config = [
         '@tests' => '@app/tests',
     ],
     'components' => [
+        
+        'authManager'=>[
+            'class'=>'yii\rbac\DbManager'],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
@@ -35,7 +38,7 @@ $config = [
         ],
     ],
     */
-];
+   ];
 
 if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment

@@ -36,7 +36,7 @@ class Project extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            
             'name' => 'Name',
         ];
     }
@@ -48,5 +48,19 @@ class Project extends \yii\db\ActiveRecord
     {
         return $this->hasMany(User::className(), ['id'=>'user_id'])
         ->via('projectUsers');
+    }
+    public function getTerm()
+    {
+        return $this->hasMany(Term::className(), ['project_id'=>'id']);
+    }
+    public function delete()
+    {
+        Term::deleteAll(['project_id'=>$this->id]);
+        parent::delete();
+    }
+    public function remove(){
+        ProjectUser::deleteAll(['user_id'=>$this->id]);
+        parent::remove();
+        
     }
 }

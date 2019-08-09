@@ -17,6 +17,7 @@ class m190724_004305_create_project_user_table extends Migration
             'project_id'=>$this->integer(),
             'user_id'=>$this->integer(),
             'privilege'=>$this->integer(),
+            'created_at'=>$this->integer(),
         ]);
     }
 

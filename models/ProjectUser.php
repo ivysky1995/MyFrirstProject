@@ -12,6 +12,7 @@ use yii\helpers\ArrayHelper;
  * @property int $project_id
  * @property int $user_id
  * @property int $privilege
+ * @property int $created_at
  */
 class ProjectUser extends \yii\db\ActiveRecord
 {
@@ -31,7 +32,7 @@ class ProjectUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['project_id', 'user_id', 'privilege'], 'integer'],
+            [['project_id', 'user_id', 'privilege','created_at'], 'integer'],
         ];
     }
 
@@ -45,6 +46,7 @@ class ProjectUser extends \yii\db\ActiveRecord
             'project_id' => 'Project ID',
             'user_id' => 'User ID',
             'privilege' => 'Privilege',
+            'created_at'=>'Created_at',
         ];
     }
     public function getProject()
